@@ -11,4 +11,6 @@ $ git clone https://github.com/sfsksasbs3/dwm
 $ cd dwm  
 (as root) make install
 
-also consider reading the other README file
+Also consider reading the other README file
+
+No I did not update the man pages
