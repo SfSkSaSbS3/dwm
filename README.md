@@ -6,9 +6,9 @@ I really just made this repo so I can copy it over to other computers and VMs bu
 
 I suck at making descriptions.
 
-You can build and install it yourself with:
-$ git clone https://github.com/sfsksasbs3/dwm
-$ cd dwm
+You can build and install it yourself with:  
+$ git clone https://github.com/sfsksasbs3/dwm  
+$ cd dwm  
 (as root) make install
 
 also consider reading the other README file
