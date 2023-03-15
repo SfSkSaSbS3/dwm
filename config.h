@@ -9,6 +9,8 @@ static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const char *fonts[]          = { "monospace:size=10", "fontawesome:size=10" };
 static const char dmenufont[]       = "monospace:size=10";
+static unsigned int baralpha        = 0xc0;
+static unsigned int borderalpha     = 0x80;
 static const char col_grey1[]       = "#222222";
 static const char col_grey2[]       = "#444444";
 static const char col_grey3[]       = "#bbbbbb";
@@ -65,32 +67,23 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_grey1, "-nf", col_grey3, "-sb", col_blue, "-sf", col_grey4, NULL };
-static const char *termcmd[]  = { "st", NULL };
+static const char *terminal[] = { "st", NULL };
 static const char *browser[]  = { "librewolf", NULL };
 static const char *fileman[]  = { "pcmanfm", NULL };
-static const char *scrshot[]  = { "screengrab", NULL };
-static const char *emoji[]    = { "/home/sfsksasbs3/scripts/emoji", NULL };
-
-static const char *volup[] = {"/usr/bin/pactl", "set-sink-volume", "0", "+5%", NULL };
-static const char *voldown[] = {"/usr/bin/pactl", "set-sink-volume", "0", "-5%", NULL };
-static const char *volmute[] = {"/usr/bin/pactl", "set-sink-mute", "0", "toggle", NULL };
-
-static const char *brightup[] = {"light", "-A", "5", NULL };
-static const char *brightdown[] = {"light", "-U", "5", NULL };
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_r,      spawn,          {.v = dmenucmd } },
-	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
+	{ MODKEY,                       XK_Return, spawn,          {.v = terminal } },
 	{ MODKEY,                       XK_w,      spawn,          {.v = browser } },
 	{ MODKEY,                       XK_e,      spawn,          {.v = fileman } },
-	{ MODKEY,                       XK_s,      spawn,          {.v = scrshot } },
-	{ MODKEY,                       XK_period,      spawn,          {.v = emoji } },
-	{ 0     ,        XF86XK_AudioRaiseVolume,  spawn,          {.v = volup} },
-	{ 0     ,        XF86XK_AudioLowerVolume,  spawn,          {.v = voldown} },
-	{ 0     ,        XF86XK_AudioMute,         spawn,          {.v = volmute} },
-	{ 0     ,        XF86XK_MonBrightnessUp,   spawn,          {.v = brightup} },
-	{ 0     ,        XF86XK_MonBrightnessDown, spawn,          {.v = brightdown} },
+	{ MODKEY,                       XK_s,      spawn,          SHCMD("screengrab") },
+	{ MODKEY,                       XK_t,      spawn,          SHCMD("/home/sfsksasbs3/scripts/emoji") },
+	{ 0     ,        XF86XK_AudioRaiseVolume,  spawn,          SHCMD("pactl set-sink-volume 0 +5%; kill -36 $(pidof dwmblocks)") },
+	{ 0     ,        XF86XK_AudioLowerVolume,  spawn,          SHCMD("pactl set-sink-volume 0 -5%; kill -36 $(pidof dwmblocks)") },
+	{ 0     ,        XF86XK_AudioLowerVolume,  spawn,          SHCMD("pactl set-sink-mute 0 toggle; kill -36 $(pidof dwmblocks)") },
+	{ 0     ,        XF86XK_MonBrightnessUp,   spawn,          SHCMD("light -A 5") },
+	{ 0     ,        XF86XK_MonBrightnessDown, spawn,          SHCMD("light -U 5") },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
@@ -133,7 +126,7 @@ static const Button buttons[] = {
 	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
 	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
 	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
-	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
+	{ ClkStatusText,        0,              Button2,        spawn,          {.v = terminal } },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
 	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
 	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
